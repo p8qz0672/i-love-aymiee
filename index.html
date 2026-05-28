@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Marry Me?</title>
+    <style>
+        /* Modern reset and smooth aesthetics */
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            /* Beautiful pink gradient background */
+            background: linear-gradient(135deg, #ffeee8 0%, #ffd6eb 50%, #ffc2e0 100%);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Playfair Display', 'Didot', 'Georgia', serif;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            transition: background 1s ease-in-out;
+        }
+
+        /* Floating Animation Elements */
+        .floating-element {
+            position: absolute;
+            pointer-events: none;
+            bottom: -100px;
+            animation: floatUp 6s ease-in infinite;
+            z-index: 1;
+        }
+
+        .heart-particle {
+            color: rgba(147, 51, 234, 0.65);
+            font-size: 24px;
+        }
+
+        .image-particle {
+            width: 50px;
+            height: auto;
+            border-radius: 8px;
+            opacity: 0.75;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-115vh) translateX(120px) rotate(360deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Premium Glassmorphism Card Design */
+        #main-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(168, 85, 247, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            max-width: 90%;
+            width: 480px;
+            z-index: 10;
+            transform: scale(1);
+            animation: cardEntrance 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Title styling */
+        h1 {
+            color: #6c3082; 
+            font-size: 4.8rem;
+            margin: 0 0 5px 0;
+            font-family: inherit;
+            letter-spacing: -1px;
+        }
+
+        /* Subtitle */
+        h2 {
+            color: #701a75;
+            font-size: 2.2rem;
+            margin-bottom: 35px;
+            font-weight: 400;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            align-items: center;
+            min-height: 160px;
+            position: relative;
+        }
+
+        button {
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            border-radius: 100px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            outline: none;
+        }
+
+        #yes-btn {
+            background: linear-gradient(135deg, #42af47 0%, #2e8b32 100%);
+            color: white;
+            z-index: 100;
+        }
+
+        #yes-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 25px rgba(46, 139, 50, 0.3);
+        }
+
+        #no-btn {
+            background: linear-gradient(135deg, #f75346 0%, #d32f2f 100%);
+            color: white;
+        }
+
+        #no-btn:hover {
+            transform: scale(0.95);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Invisible, highly scannable text container so background image shows through */
+        #success-container {
+            background: rgba(255, 255, 255, 0.15); /* Sleek translucent glass */
+            padding: 50px 45px;
+            border-radius: 35px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(6px); /* Blurs image slightly just under text for extreme readability */
+            -webkit-backdrop-filter: blur(6px);
+            max-width: 90%;
+            width: 650px;
+            max-height: 85vh;
+            overflow-y: auto;
+            z-index: 1000;
+            animation: letterReveal 1.4s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        @keyframes letterReveal {
+            from { opacity: 0; transform: translateY(50px) scale(0.93); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        /* Deep royal purple/dark text with subtle text-shadow ensures contrast over the picture */
+        #success-message {
+            color: #2b0030; 
+            font-size: 1.75rem;
+            line-height: 1.7;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-align: justify;
+            text-justify: inter-word;
+            text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Custom scrollbar */
+        #success-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        #success-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        #success-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="background-animation-layer"></div>
+
+    <div id="main-card">
+        <h1>hi baby</h1>
+        <h2>Will you marry me? 💜</h2>
+        
+        <div class="btn-container">
+            <button id="yes-btn" onclick="sayYes()">Yes</button>
+            <button id="no-btn" onclick="growYes()">No</button>
+        </div>
+    </div>
+
+    <div id="success-container" class="hidden">
+        <div id="success-message">
+            oh my love Ayms since the day i have met you in my dear i knew you were the one for me i ask god in my prayers to keep us Together forever my dear i love you so so much your smile that can cure any disease your voice that can melt my heart your eyes where i can stare at them all day your beautiful hair where it looks like a golden fall your personality where i can feel normal and act my way whit you oh my dear how much im grateful and proud of you my love you are the best in every way perfect in every aspect your my sunshine my moon my stars my life my everything i can live whit out you i love you so so much my princess 💜🤞🏾👉🏾👈🏾
+        </div>
+    </div>
+
+    <script>
+        const bgLayer = document.getElementById('background-animation-layer');
+        const imgUrl = "https://i.ibb.co/Y7NQQmN1/IMG-6563.png";
+        const heartIcons = ['💜', '✨', '💜', '✨']; 
+        
+        function createParticle() {
+            const element = document.createElement('div');
+            element.classList.add('floating-element');
+            
+            // Randomly decide to drop an emoji or the floating picture link
+            if (Math.random() > 0.3) {
+                element.classList.add('heart-particle');
+                element.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                element.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            } else {
+                const img = document.createElement('img');
+                img.src = imgUrl;
+                img.classList.add('image-particle');
+                element.appendChild(img);
+            }
+            
+            element.style.left = Math.random() * 100 + 'vw';
+            element.style.animationDuration = (Math.random() * 2.5 + 4.5) + 's'; 
+            
+            bgLayer.appendChild(element);
+            
+            setTimeout(() => {
+                element.remove();
+            }, 7000);
+        }
+        
+        // Spawning loop
+        setInterval(createParticle, 200);
+
+        let yesScale = 1;
+        let yesPaddingX = 40;
+        let yesPaddingY = 16;
+
+        function growYes() {
+            const yesBtn = document.getElementById('yes-btn');
+            
+            yesScale += 0.45; 
+            yesPaddingX += 14;
+            yesPaddingY += 7;
+
+            yesBtn.style.transform = `scale(${yesScale})`;
+            yesBtn.style.padding = `${yesPaddingY}px ${yesPaddingX}px`;
+
+            if (yesScale > 7.5) {
+                yesBtn.style.position = 'fixed';
+                yesBtn.style.top = '0';
+                yesBtn.style.left = '0';
+                yesBtn.style.width = '100vw';
+                yesBtn.style.height = '100vh';
+                yesBtn.style.borderRadius = '0';
+                yesBtn.style.zIndex = '99999';
+                yesBtn.style.fontSize = '4.5rem';
+                yesBtn.style.display = 'flex';
+                yesBtn.style.alignItems = 'center';
+                yesBtn.style.justifyContent = 'center';
+                yesBtn.innerHTML = 'YES! 💜';
+                yesBtn.setAttribute("onclick", "sayYes()");
+            }
+        }
+
+        function sayYes() {
+            // Hide the question layout
+            document.getElementById('main-card').classList.add('hidden');
+            const yesBtn = document.getElementById('yes-btn');
+            if(yesBtn) yesBtn.classList.add('hidden');
+
+            // Set picture link as the entire screen background smoothly
+            document.body.style.backgroundImage = `url('${imgUrl}')`;
+
+            // Display the beautiful crystal clear letter layout
+            document.getElementById('success-container').classList.remove('hidden');
+            document.body.style.overflow = 'auto'; 
+        }
+    </script>
+</body>
+</html>
